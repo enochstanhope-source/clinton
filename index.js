@@ -21,6 +21,8 @@ window.addEventListener('scroll', () => {
     else navbar.classList.remove('scrolled');
 });
 
+// No image slider: hero shows a single static image (goodfold1.jpg)
+
 // Form submission handling with inline status (no alert)
 const enrollmentForm = document.getElementById('enrollmentForm');
 if (enrollmentForm) {
@@ -66,6 +68,8 @@ document.querySelectorAll('.feature-card, .testimonial-card').forEach(el => {
 const styleTag = document.createElement('style');
 styleTag.textContent = `.fade-in{opacity:1 !important;transform:translateY(0) !important}`;
 document.head.appendChild(styleTag);
+
+// No image slider functionality here; hero uses a single static image
 
 // Mobile navigation functionality
 const navToggle = document.querySelector('.nav-toggle');

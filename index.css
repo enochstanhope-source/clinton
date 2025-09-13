@@ -1,3 +1,13 @@
+.learn {
+ background-color: #11307ee1;
+ padding: 10px 10px 10px 20px;
+ font-size: 14px;
+ border-radius: 4px;
+ margin-top: 2px;
+ margin-bottom: 2px;box-shadow: 0 4px 10px rgb(148, 144, 144);
+
+
+}
 /* Ensure hero text doesn't touch the image; keep button layout centered */
 .hero-content .hero-text {
     padding-right: 140px;
@@ -19,14 +29,50 @@
     object-fit: cover;
 }
 
-/* Crossfade helpers for the inline hero image slideshow */
-.hero-inline-img,
-.hero-inline-img.fade-target {
-    transition: opacity 1.5s ease-in-out;
-    opacity: 1;
+/* Slider styles */
+.slider {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
-.hero-inline-img.is-fading {
-    opacity: 0;
+
+.slide-images {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.hero-inline-img {
+    width: 120px;
+    height: auto;
+    max-height: 100px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 700px) {
+    .slide-images {
+        max-width: 320px;
+        margin: 0 auto;
+        padding: 0.75rem 0;
+    }
+    .hero-inline-img {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+}
+
+/* centered alternate image placed later on page */
+.centered-alt-image img {
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    display: block;
+    margin: 0 auto;
 }
 
 /* Responsive: stack hero content on small screens */
@@ -51,10 +97,10 @@
     .hero .hero-image{display:none}
 }
 .hero-content h1{
-    line-height: 1.1;
-    font-weight: 900;
+    line-height: 0.9;
+    font-family: Roboto, Arial;
    
-    text-shadow: 5px 6px 13px rgb(0, 0, 0);
+
 }
 
 /* Reset and base */
@@ -76,11 +122,12 @@
 html,body{height:100%}
 body{
     font-family: Inter, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    background: linear-gradient(280deg, rgba(0, 0, 0, 0.653), #ffffff 70%);
+    background: linear-gradient(280deg, rgb(109, 27, 27), #ffffff 70%);
     color:var(--white);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     line-height:1.45;
+   
 }
 
 .container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
@@ -175,7 +222,7 @@ body{
     align-items: center;
     justify-content: center;
     min-width: 200px;
-    background: linear-gradient(90deg, #c41111, #000000);
+    background: linear-gradient(90deg, #631919, #000000);
     color: #ffffff;
     padding: 15px 40px 15px 40px;
     border-radius: 999px;
@@ -265,7 +312,7 @@ body{
 /* HERO */
 .hero{padding:6.5rem 0 3rem}
 .hero .container{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center}
-.hero h1{font-size:1.7rem;margin:0 0 .6rem;color:rgb(2, 56, 191)}
+.hero h1{font-size:1.7rem;margin:0 0 .6rem;color:rgb(255, 115, 0)}
 .hero-text{color:var(--muted);max-width:50ch;margin-bottom:1rem}
 .hero-image img{width:100%;height:auto;border-radius:var(--radius);box-shadow:0 10px 30px rgba(2,6,23,0.6)}
 
@@ -376,7 +423,8 @@ footer{padding:2rem 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:2re
         margin-top: 1.5rem;
         text-align: center;
         padding: 1rem 1.5rem;
-        background: linear-gradient(190deg,rgb(222, 221, 221),rgb(4, 27, 51));
+       background: linear-gradient(90deg, #631919, #000000);
+    color: #ffffff;
         color: #ffffff;
         border-radius: 50px;
         font-weight: 600;
