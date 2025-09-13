@@ -1,6 +1,39 @@
+.what {
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    background:  saddlebrown;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.218);
+    border-radius: 5px;
+    padding-bottom: 1px;
+    margin-bottom: -30px;
+}
+.list {
+    background-color: rgb(237, 105, 39);
+    margin-top: -30px;
+}
+/* Features list styling */
+.features-list{
+    list-style: disc inside;
+    margin: 2rem 0 1.5rem 0.5rem;
+    padding: 20px;
+    color: #ffffff; /* dark text for contrast on orange */
+    font-size: .98rem;
+    line-height: 1.6;
+    font-family: roboto, arial;
+    font-weight: 400;
+}
+.features-list li{
+    margin: 0.5rem 0;
+}
+     
+.what h2 {
+ font-weight: 400;
+ padding: 18px 10px 10px 24px;
+}
+
 .learn {
- background-color: #11307ee1;
- padding: 10px 10px 10px 20px;
+ background-color:  rgb(17, 34, 84);
+ padding: 10px 10px 10px;
  font-size: 14px;
  border-radius: 4px;
  margin-top: 2px;
@@ -11,7 +44,7 @@
 /* Ensure hero text doesn't touch the image; keep button layout centered */
 .hero-content .hero-text {
     padding-right: 140px;
-    box-sizing: border-box;
+    box-sizing: b5rder-box;
 }
 /* Style the image inside .hero-content to stay top right */
 .hero-content {
@@ -222,7 +255,7 @@ body{
     align-items: center;
     justify-content: center;
     min-width: 200px;
-    background: linear-gradient(90deg, #631919, #000000);
+    background: linear-gradient(90deg, saddlebrown, #000000);
     color: #ffffff;
     padding: 15px 40px 15px 40px;
     border-radius: 999px;
@@ -312,7 +345,7 @@ body{
 /* HERO */
 .hero{padding:6.5rem 0 3rem}
 .hero .container{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center}
-.hero h1{font-size:1.7rem;margin:0 0 .6rem;color:rgb(255, 115, 0)}
+.hero h1{font-size:1.7rem;margin:0 0 .6rem;color:orange}
 .hero-text{color:var(--muted);max-width:50ch;margin-bottom:1rem}
 .hero-image img{width:100%;height:auto;border-radius:var(--radius);box-shadow:0 10px 30px rgba(2,6,23,0.6)}
 
@@ -423,7 +456,7 @@ footer{padding:2rem 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:2re
         margin-top: 1.5rem;
         text-align: center;
         padding: 1rem 1.5rem;
-       background: linear-gradient(90deg, #631919, #000000);
+       background: linear-gradient(90deg, saddlebrown, #000000);
     color: #ffffff;
         color: #ffffff;
         border-radius: 50px;
