@@ -23,7 +23,7 @@ window.addEventListener('scroll', () => {
 
 // No image slider: hero shows a single static image (goodfold1.jpg)
 
-// Form submission handling with inline status (no alert)
+// Form submission handling with WhatsApp redirect
 const enrollmentForm = document.getElementById('enrollmentForm');
 if (enrollmentForm) {
     const statusEl = document.getElementById('formStatus');
@@ -32,17 +32,36 @@ if (enrollmentForm) {
         const submitBtn = this.querySelector('button[type="submit"]');
         if (submitBtn) submitBtn.disabled = true;
 
+        // Get form data
         const formData = new FormData(this);
-        const payload = {};
-        formData.forEach((v, k) => (payload[k] = v));
-        console.log('Form payload:', payload);
+        const name = formData.get('name');
+        const phone = formData.get('phone');
 
-        // Simulate async submit
+        // Save to localStorage in case user wants to review later
+        const payload = {
+            name,
+            phone,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('lastEnrollmentSubmission', JSON.stringify(payload));
+
+        // Show success message
+        if (statusEl) statusEl.textContent = 'Redirecting you to WhatsApp...';
+
+        // Prepare WhatsApp message with user's name
+        const whatsappMessage = encodeURIComponent(`Hello Vista Express Logistics, my name is ${name}. I would like to register for your Importation Mentorship Program. Kindly share the registration details with me.`);
+        const whatsappNumber = "2349121195283";
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+        // Reset form
+        this.reset();
+        
+        // Redirect to WhatsApp after a short delay
         setTimeout(() => {
-            if (statusEl) statusEl.textContent = 'Application received — we will contact you soon.';
-            this.reset();
+            window.open(whatsappURL, '_blank');
             if (submitBtn) submitBtn.disabled = false;
-        }, 700);
+            if (statusEl) statusEl.textContent = 'Form submitted successfully! Check your WhatsApp.';
+        }, 1000);
     });
 }
 
@@ -121,34 +140,182 @@ window.addEventListener('resize', () => {
     }
 });
 
+// FAQ Accordion functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const wasExpanded = question.getAttribute('aria-expanded') === 'true';
+            
+            // Close all other questions
+            faqQuestions.forEach(q => {
+                if (q !== question) {
+                    q.setAttribute('aria-expanded', 'false');
+                }
+            });
+            
+            // Toggle current question
+            question.setAttribute('aria-expanded', (!wasExpanded).toString());
+        });
+    });
+});
+
+// Facilitator slider functionality
+(function() {
+    const facilitatorSlider = document.querySelector('.facilitator-slider');
+    if (!facilitatorSlider) return;
+
+    const slides = Array.from(facilitatorSlider.querySelectorAll('.facilitator-slide'));
+    if (slides.length === 0) return;
+
+    const prevBtn = facilitatorSlider.querySelector('.slider-button.prev');
+    const nextBtn = facilitatorSlider.querySelector('.slider-button.next');
+
+    let current = 0;
+    let intervalId = null;
+    const AUTO_MS = 3200; // time between slides
+
+    function updateSlides() {
+        slides.forEach((s, i) => {
+            s.classList.remove('active', 'prev', 'next');
+            if (i === current) s.classList.add('active');
+        });
+    }
+
+    function next() {
+        current = (current + 1) % slides.length;
+        updateSlides();
+    }
+
+    function prev() {
+        current = (current - 1 + slides.length) % slides.length;
+        updateSlides();
+    }
+
+    // Initialize controls
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+        clearInterval(intervalId);
+        prev();
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+        clearInterval(intervalId);
+        next();
+    });
+
+    // Start auto-rotation
+    updateSlides();
+    intervalId = setInterval(next, AUTO_MS);
+})();
+
 // Testimonial slider controls
-const track = document.querySelector('.slider-track');
-const prevBtn = document.querySelector('.slider-nav.prev');
-const nextBtn = document.querySelector('.slider-nav.next');
-if (track && prevBtn && nextBtn) {
-    let index = 0;
-    const items = track.children;
-    const total = items.length;
+// Testimonial slider (fade, loop right-to-left)
+;(function() {
+    const slider = document.querySelector('.testimonial-slider');
+    if (!slider) return;
 
-    const update = () => {
-        const width = items[0].getBoundingClientRect().width + parseFloat(getComputedStyle(items[0]).marginRight || 0);
-        track.style.transform = `translateX(${-(index * width)}px)`;
-    };
+    const slides = Array.from(slider.querySelectorAll('.slide'));
+    if (slides.length === 0) return;
 
-    nextBtn.addEventListener('click', () => {
-        index = (index + 1) % total;
-        update();
+    // create dots
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'slider-dots';
+    slides.forEach((s, i) => {
+        const btn = document.createElement('button');
+        btn.setAttribute('aria-label', `Show slide ${i + 1}`);
+        btn.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(btn);
     });
-    prevBtn.addEventListener('click', () => {
-        index = (index - 1 + total) % total;
-        update();
+    slider.appendChild(dotsWrap);
+
+    const prevBtn = slider.querySelector('.slider-button.prev');
+    const nextBtn = slider.querySelector('.slider-button.next');
+    const dots = Array.from(dotsWrap.children);
+
+    let current = 0;
+    let intervalId = null;
+    const AUTO_MS = 3200; // time between slides
+    const TRANSITION_MS = 700;
+
+    function updateClasses() {
+        slides.forEach((s, i) => {
+            s.classList.remove('active', 'prev', 'next');
+            s.setAttribute('aria-hidden', 'true');
+            s.tabIndex = -1;
+        });
+
+        const active = slides[current];
+        const nextIdx = (current + 1) % slides.length;
+        const prevIdx = (current - 1 + slides.length) % slides.length;
+
+        slides[prevIdx].classList.add('prev');
+        slides[nextIdx].classList.add('next');
+
+        active.classList.add('active');
+        active.removeAttribute('aria-hidden');
+        active.tabIndex = 0;
+
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    function goTo(index) {
+        current = ((index % slides.length) + slides.length) % slides.length;
+        updateClasses();
+        restartAutoplay();
+    }
+
+    function next() {
+        // move right-to-left visually: advance index
+        goTo(current + 1);
+    }
+    function prev() {
+        goTo(current - 1);
+    }
+
+    function startAutoplay() {
+        stopAutoplay();
+        intervalId = setInterval(() => {
+            next();
+        }, AUTO_MS);
+    }
+    function stopAutoplay() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }
+    function restartAutoplay() {
+        stopAutoplay();
+        // small delay before restarting so user sees change
+        setTimeout(startAutoplay, AUTO_MS);
+    }
+
+    // attach controls
+    if (nextBtn) nextBtn.addEventListener('click', next);
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+
+    // pause on hover/focus
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+    slider.addEventListener('focusin', stopAutoplay);
+    slider.addEventListener('focusout', startAutoplay);
+
+    // keyboard navigation
+    slider.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            next();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prev();
+        }
     });
 
-    // handle resize
-    window.addEventListener('resize', update);
-    // init
-    setTimeout(update, 50);
-}
+    // initialize
+    updateClasses();
+    startAutoplay();
+})();
 
 // Inline hero image slideshow (crossfade between two images)
 /* (function() {
@@ -179,3 +346,11 @@ if (track && prevBtn && nextBtn) {
         crossfade(idx);
     }, 6200); // change image every 6.2s for slower transitions
 })(); */
+
+// Prevent browser from restoring scroll position on refresh to avoid jumps.
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+// Ensure we don't force-scroll to top in a way that causes a visible jump; let the browser handle initial positioning.
+// Removed the previous onbeforeunload and onload forced scrolls to avoid glitches on mobile.
